@@ -13,12 +13,12 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install Depenencies
-        working-directory: devops-ia-2-edicao/02-encontros-tech
+        working-directory: 02-encontros-tech
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run tests
-        working-directory: devops-ia-2-edicao/02-encontros-tech
+        working-directory: 02-encontros-tech
         run: python -m pytest tests/ -v
 
   CD:
@@ -49,8 +49,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./devops-ia-2-edicao/02-encontros-tech
-          file: ./devops-ia-2-edicao/02-encontros-tech/Dockerfile
+          context: ./02-encontros-tech
+          file: ./02-encontros-tech/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -76,7 +76,7 @@ jobs:
         uses: azure/k8s-deploy@v4
         with:
           manifests: |
-            devops-ia-2-edicao/02-encontros-tech/k8s/postgres-deployment.yaml
-            devops-ia-2-edicao/02-encontros-tech/k8s/deployment.yaml
+            02-encontros-tech/k8s/postgres-deployment.yaml
+            02-encontros-tech/k8s/deployment.yaml
           images: ${{ steps.image-tag.outputs.image }}
           kubectl-version: 'latest'
